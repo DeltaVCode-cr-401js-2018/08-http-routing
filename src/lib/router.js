@@ -13,12 +13,17 @@ methods.forEach(method => {
     routes[method][path] = callback;
   };
 });
-  
+
 router.route =(req, res) => {
   return requestParser(req)
     .then(() => {
       const methodRoutes = routes[req.method];
       const pathRoute = methodRoutes[req.parsedUrl.pathname];
+      if(pathRoute){
         pathRoute(req,res);
-});
+      }
+      else {
+        return Promise.reject(404);
+      }
+    });
 };
