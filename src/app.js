@@ -3,7 +3,7 @@
 const http = require('http');
 const cowsay = require('cowsay');
 
-const requestParser = require('./lib/request-parser');
+const router = require('./lib/router');
 
 const app = http.createServer(requestHandler);
 module.exports = app;
@@ -23,10 +23,7 @@ app.start = (port) =>
 function requestHandler(req,res) {
   console.log(`${req.method} ${req.url}`);
 
-  requestParser(req)
-    .then(() => {
-      if(req.parsedUrl.pathname === '/500') {
-        throw new Error('Test Error');
+  router.route(req,res)
       }
       if(req.method === 'GET' && req.parsedUrl.pathname === '/'){
         html(res, '<!DOCTYPE html><html><head><title> cowsay </title>  </head><body><header><nav><ul><li><a href="/cowsay">cowsay</a></li></ul></nav><header><main><!-- project description --></main></body></html>');
