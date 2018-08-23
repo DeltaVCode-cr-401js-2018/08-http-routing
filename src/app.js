@@ -24,25 +24,34 @@ function requestHandler(req,res) {
   console.log(`${req.method} ${req.url}`);
 
   router.route(req,res)
+    .catch(err => {
+      if(err === 404){
+        notFound(res);
+        return;
       }
+      console.log(err);
+      html(res,err.message, 500, 'Internal Server Error');
+    });
+}
+
 router.post('/500', (req,res) => {
   throw new Error('Test Error');
 });
 
 router.get('/', (req,res) => {
-        html(res, '<!DOCTYPE html><html><head><title> cowsay </title>  </head><body><header><nav><ul><li><a href="/cowsay">cowsay</a></li></ul></nav><header><main><!-- project description --></main></body></html>');
+  html(res, '<!DOCTYPE html><html><head><title> cowsay </title>  </head><body><header><nav><ul><li><a href="/cowsay">cowsay</a></li></ul></nav><header><main><!-- project description --></main></body></html>');
 });
 
 router.get('/cowsay', (req,res) => {
-        let message = req.query.text?cowsay.say({text: req.query.text}):cowsay.say({text: 'I need something good to say!'});
-        html(res, `<!DOCTYPE html><html><head><title> cowsay </title></head><body><h1> cowsay </h1><pre>${message}</pre></html>`);
+  let message = req.query.text?cowsay.say({text: req.query.text}):cowsay.say({text: 'I need something good to say!'});
+  html(res, `<!DOCTYPE html><html><head><title> cowsay </title></head><body><h1> cowsay </h1><pre>${message}</pre></html>`);
 });
   
 router.get('/api/cowsay', (req,res) => {
-        json(res,{
-          text: req.query.text,
-        });
-    });
+  json(res,{
+    text: req.query.text,
+  });
+});
 
 function html(res,content, statusCode =200, statusMessage = 'OK') {
   res.statusCode = statusCode;
