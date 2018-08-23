@@ -18,4 +18,21 @@ describe('router', () => {
     expect(router.routes.POST['/post']).toBeDefined();
     expect(router.routes.POST['/post']()).toBe('posted');
   });
+
+  describe('route', () => {
+    it('can route callback if method and path match', () => {
+      router.get('/test', (req,res) => {res.statusCode = 200; });
+      
+      let req = {
+        method:'GET',
+        url: 'http://localhost:5000/test',
+      };
+      let res = {};
+
+      return router.route(req,res)
+        .then(() => {
+          expect(res.statusCode).toBe(200);
+        });
+    });
+  });
 });
