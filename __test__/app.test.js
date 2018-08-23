@@ -3,6 +3,7 @@
 const request = require('supertest');
 
 const app = require('../src/app');
+const Note = require('../src/models/notes');
 
 describe('app', () => {
   it('responds with 404 for unknown path', ()=>{
@@ -35,15 +36,7 @@ describe('app', () => {
         expect(response.text).toMatch('</html>');
       });
   });
-  // it('responds with an error message when you don\'t give it the correct input', () => {
-  //   return request(app)
-  //   .get('/cowsay/text=hi')
-  //   .expect(400)
-  //   .expect('Content-Type', 'text/html')
-  //   .expect(response => {
-  //     expect(response.text).toBe('Your input is incorrect');
-  //   });
-  // });
+  // it('responds
 
   it('responds with JSON for /api/cowsay?text={message}', ()=>{
     return request(app)
@@ -66,14 +59,32 @@ describe('app', () => {
   });
   describe('api routes', () => {
     it('can get /api/v1/notes', () => {
-      return request(app)
-        .get('/api/v1/notes?id=124')
-        .expect(200)
-        .expect('Content-Type', 'application/json')
-        .expect(response=>{
-          expect(response.body).toEqual({ message: `ID 124 was requested` });
-        });
+      var notes = [
+        new Note({ title: 'test 1', content: 'uno' }),
+        new Note({ title: 'test 2', content: 'dos' }),
+        new Note({ title: 'test 3', content: 'tres' }),
+      ];
+       return Promise.all(
+        notes.map(note => note.save())
+      ).then(savedNotes => {
+        return request(app)
+          .get('/api/notes')
+          .expect(200)
+          .expect('Content-Type', 'application/json')
+          .expect(savedNotes);
+      });
     });
+    it('can get /api/notes?id=...', () => {
+      var note = new Note({ title: 'save me', content: 'please' });
+       return note.save()
+        .then(saved => {
+          return request(app)
+            .get(`/api/notes?id=${saved.id}`)
+            .expect(200)
+            .expect('Content-Type', 'application/json')
+            .expect(saved);
+        });
+      });
     it('can delete /api/v1/notes?id=deleteme', () => {
       return request(app)
         .delete('/api/notes?id=deleteme')
