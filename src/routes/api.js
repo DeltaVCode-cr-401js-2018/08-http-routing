@@ -7,11 +7,11 @@ const Note = require('../models/notes');
 router.get('/api/notes', (req, res) => {
   if (req.query.id) {
     return Note.findById(req.query.id)
-    .then(note => {
-      json(res, note);
-    });
+      .then(note => {
+        json(res, note);
+      });
   }
-   Note.fetchAll()
+  Note.fetchAll()
     .then(notes => {
       json(res, notes);
     });

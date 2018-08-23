@@ -64,7 +64,7 @@ describe('app', () => {
         new Note({ title: 'test 2', content: 'dos' }),
         new Note({ title: 'test 3', content: 'tres' }),
       ];
-       return Promise.all(
+      return Promise.all(
         notes.map(note => note.save())
       ).then(savedNotes => {
         return request(app)
@@ -76,7 +76,7 @@ describe('app', () => {
     });
     it('can get /api/notes?id=...', () => {
       var note = new Note({ title: 'save me', content: 'please' });
-       return note.save()
+      return note.save()
         .then(saved => {
           return request(app)
             .get(`/api/notes?id=${saved.id}`)
@@ -84,7 +84,7 @@ describe('app', () => {
             .expect('Content-Type', 'application/json')
             .expect(saved);
         });
-      });
+    });
     it('can delete /api/v1/notes?id=deleteme', () => {
       return request(app)
         .delete('/api/notes?id=deleteme')
