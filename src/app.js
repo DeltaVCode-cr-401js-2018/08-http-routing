@@ -42,7 +42,9 @@ router.get('/', (req, res) => {
   html(res, '<!DOCTYPE html><html><head><title> cowsay </title>  </head><body><header><nav><ul><li><a href="/cowsay">cowsay</a></li></ul></nav><header><main><!-- project description --></main></body></html>');
 });
 router.get('/cowsay', (req, res) =>{
-  html(res, `<!DOCTYPE html><html><head><title> cowsay </title>  </head><body><h1> cowsay </h1><pre>${cowsay.say({text: req.query.text})}</pre></body></html>`);
+  var cowSays = cowsay.say({text: req.query.text});
+  console.log({ cowSays });
+  html(res, `<!DOCTYPE html><html><head><title> cowsay </title>  </head><body><h1> cowsay </h1><pre>${cowSays}</pre></body></html>`);
 });
 router.get('/api/cowsay', (req, res) =>{
   json(res, {

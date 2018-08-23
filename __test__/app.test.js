@@ -37,6 +37,15 @@ describe('app', () => {
         expect(response.text).toMatch('</html>');
       });
   });
+  it('responds with an error message when you don\'t give it the correct input', () => {
+    return request(app)
+    .get('/cowsay/text=hi')
+    .expect(400)
+    .expect('Content-Type', 'text/html')
+    .expect(response => {
+      expect(response.text).toBe('Your input is incorrect');
+    })
+  })
 
   it('responds with JSON for /api/cowsay?text={message}', ()=>{
     return request(app)

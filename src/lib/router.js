@@ -1,19 +1,12 @@
 'use strict';
 
 const requestParser = require('./request-parser');
-
 const router = exports;
-
-// Make me my router
 const routes = exports.routes = {};
-
-// List of supported methods
 const methods = ['GET', 'POST', 'DELETE', 'PUT'];
 
 methods.forEach(method => {
-  // Initialize this method's route table
   routes[method] = {};
-
   router[method.toLowerCase()] = (path, callback) => {
     routes[method][path] = callback;
   };

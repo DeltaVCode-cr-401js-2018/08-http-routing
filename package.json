@@ -4,7 +4,8 @@
   "description": "![cf](https://i.imgur.com/7v5ASc8.png) Lab 08: HTTP Routing ======",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "test": "jest",
     "start": "node server.js"
   },
   "repository": {
