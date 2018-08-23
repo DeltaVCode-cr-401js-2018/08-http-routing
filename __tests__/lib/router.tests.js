@@ -34,5 +34,15 @@ describe('router', () => {
           expect(res.statusCode).toBe(200);
         });
     });
+    it('rejects with 404 to response if method and path do not match', () => {
+      let req = {
+        method: 'GET',
+        url: 'http//localhost:5000/not-found',
+      };
+      let res = {};
+
+      return expect(router.route(req,res))
+        .rejects.toBe(404);
+    });
   });
 });
